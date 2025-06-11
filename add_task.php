@@ -1,0 +1,74 @@
+<?php
+// add_task.php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: index.php");
+    exit;
+}
+
+$host = 'localhost';
+$db = 'hotelsystem';
+$user = 'root';
+$pass = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $rooms = $pdo->query("SELECT room_id, room_number FROM rooms WHERE status != 'maintenance'")->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("DB Error: " . $e->getMessage());
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Task - Hotel Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="flex">
+    <?php include 'sidebar.php'; ?>
+    <div class="flex-1 p-6">
+        <h2 class="text-2xl font-bold mb-4">Add Housekeeping Task</h2>
+        <form action="add_task_action.php" method="POST" class="bg-white p-6 rounded shadow max-w-xl space-y-4">
+            <div>
+                <label class="block mb-1 font-semibold">Room</label>
+                <select name="room_id" required class="w-full border border-gray-300 p-2 rounded">
+                    <option value="">-- Select Room --</option>
+                    <?php foreach ($rooms as $room): ?>
+                        <option value="<?= $room['room_id'] ?>"><?= htmlspecialchars($room['room_number']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Assigned To</label>
+                <input type="text" name="assigned_to" required class="w-full border border-gray-300 p-2 rounded">
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Task Date</label>
+                <input type="date" name="task_date" required class="w-full border border-gray-300 p-2 rounded">
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Status</label>
+                <select name="status" required class="w-full border border-gray-300 p-2 rounded">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-1 font-semibold">Notes</label>
+                <textarea name="notes" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
+            </div>
+            <div>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save Task</button>
+                <a href="housekeeping.php" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
