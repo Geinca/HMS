@@ -1,3 +1,9 @@
+<?php
+session_start();
+// Example: Assuming role is stored in session as 'admin' or 'manager'
+$role = $_SESSION['role']; // e.g., 'admin' or 'manager'
+?>
+
 <!-- Mobile menu button -->
 <button id="sidebarToggle" class="md:hidden fixed top-4 left-4 z-50 p-3 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
     <i class="fas fa-bars text-lg"></i>
@@ -17,52 +23,66 @@
     
     <!-- Sidebar Menu -->
     <ul class="space-y-1">
-        <li>
-            <a href="dashboard.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
-                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-200 mr-3">
-                    <i class="fas fa-tachometer-alt text-sm"></i>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-blue-600">Dashboard</span>
-                <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
-            </a>
-        </li>
-        <li>
-            <a href="rooms.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
-                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-200 mr-3">
-                    <i class="fas fa-door-open text-sm"></i>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-blue-600">Rooms</span>
-                <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
-            </a>
-        </li>
-        <li>
-            <a href="guests.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
-                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-200 mr-3">
-                    <i class="fas fa-users text-sm"></i>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-blue-600">Guests</span>
-                <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
-            </a>
-        </li>
-        <li>
-            <a href="bookings.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
-                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-200 mr-3">
-                    <i class="fas fa-calendar-check text-sm"></i>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-blue-600">Bookings</span>
-                <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
-            </a>
-        </li>
-        <li>
-            <a href="staff.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
-                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-200 mr-3">
-                    <i class="fas fa-user-tie text-sm"></i>
-                </div>
-                <span class="font-medium text-gray-700 group-hover:text-blue-600">Staff</span>
-                <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
-            </a>
-        </li>
-    </ul>
+    <!-- Common for all roles -->
+    <li>
+        <a href="dashboard.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 group">
+            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white mr-3">
+                <i class="fas fa-tachometer-alt text-sm"></i>
+            </div>
+            <span class="font-medium text-gray-700 group-hover:text-blue-600">Dashboard</span>
+            <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
+        </a>
+    </li>
+
+    <!-- Only for Admin -->
+    <?php if ($role === 'admin'): ?>
+    <li>
+        <a href="rooms.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 group">
+            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white mr-3">
+                <i class="fas fa-door-open text-sm"></i>
+            </div>
+            <span class="font-medium text-gray-700 group-hover:text-blue-600">Rooms</span>
+            <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
+        </a>
+    </li>
+    <li>
+        <a href="staff.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 group">
+            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white mr-3">
+                <i class="fas fa-user-tie text-sm"></i>
+            </div>
+            <span class="font-medium text-gray-700 group-hover:text-blue-600">Staff</span>
+            <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
+        </a>
+    </li>
+    <?php endif; ?>
+
+    <!-- Only for Manager -->
+    <?php if ($role === 'manager'): ?>
+    <li>
+        <a href="guests.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 group">
+            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white mr-3">
+                <i class="fas fa-users text-sm"></i>
+            </div>
+            <span class="font-medium text-gray-700 group-hover:text-blue-600">Guests</span>
+            <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
+        </a>
+    </li>
+    <?php endif; ?>
+
+    <!-- Shared between roles -->
+    <?php if ($role === 'admin' || $role === 'manager'): ?>
+    <li>
+        <a href="bookings.php" class="flex items-center p-3 rounded-lg hover:bg-blue-50 group">
+            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white mr-3">
+                <i class="fas fa-calendar-check text-sm"></i>
+            </div>
+            <span class="font-medium text-gray-700 group-hover:text-blue-600">Bookings</span>
+            <i class="fas fa-chevron-right ml-auto text-xs text-gray-400 group-hover:text-blue-600"></i>
+        </a>
+    </li>
+    <?php endif; ?>
+</ul>
+
     
     <!-- Bottom Section -->
     <div class="absolute bottom-6 left-0 right-0 px-6">
