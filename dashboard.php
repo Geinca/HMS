@@ -7,14 +7,20 @@ if (!isset($_SESSION['user'])) {
 
 $user = $_SESSION['user'];
 
-$host = 'localhost';
-$db = 'hotelsystem';
+// Database configuration
+$host = '127.0.0.1';
+$port = '3307';
+$db   = 'hotel_system';
 $username = 'root';
 $password = '';
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO($dsn, $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
 
     // Fetch counts
     $roomCount = $pdo->query("SELECT COUNT(*) FROM rooms")->fetchColumn();
@@ -40,7 +46,6 @@ try {
     <title>Dashboard - Hotel System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" crossorigin="anonymous"></script>
-
 </head>
 <body class="flex bg-gray-100 min-h-screen">
 

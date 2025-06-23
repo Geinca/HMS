@@ -6,13 +6,16 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
+// Database connection
 $host = 'localhost';
-$db = 'hotelsystem';
-$user = 'root';
-$pass = '';
+$port = '3307'; // Adjust if needed (e.g., 3307 for XAMPP)
+$db = 'hotel_system';
+$charset = 'utf8mb4';
+$username = 'root';
+$password = '';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=$charset", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $staff = $pdo->query("SELECT * FROM staff_profiles ORDER BY staff_id DESC")->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -89,12 +92,8 @@ try {
     </div>
 </div>
 
-<!-- Mobile menu button (for smaller screens) -->
 <script>
-    // You can add mobile menu toggle functionality here if needed
-    document.addEventListener('DOMContentLoaded', function() {
-        // Responsive adjustments can be added here
-    });
+    // Optional: Add interactive scripts here
 </script>
 
 </body>

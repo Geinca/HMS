@@ -9,9 +9,10 @@ if (isset($_SESSION['user'])) {
 $error = $_GET['error'] ?? '';
 $success = $_GET['success'] ?? '';
 $inputValues = [
-    'name' => $_GET['name'] ?? '',
+    'name'  => $_GET['name'] ?? '',
     'email' => $_GET['email'] ?? '',
-    'phone' => $_GET['phone'] ?? ''
+    'phone' => $_GET['phone'] ?? '',
+    'role'  => $_GET['role'] ?? ''
 ];
 ?>
 <!DOCTYPE html>
@@ -54,8 +55,8 @@ $inputValues = [
                         <i class="fas fa-user text-gray-400"></i>
                     </div>
                     <input type="text" id="name" name="name" required 
-                           value="<?= htmlspecialchars($inputValues['name']) ?>"
-                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        value="<?= htmlspecialchars($inputValues['name']) ?>"
+                        class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             </div>
 
@@ -66,8 +67,8 @@ $inputValues = [
                         <i class="fas fa-envelope text-gray-400"></i>
                     </div>
                     <input type="email" id="email" name="email" required
-                           value="<?= htmlspecialchars($inputValues['email']) ?>"
-                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        value="<?= htmlspecialchars($inputValues['email']) ?>"
+                        class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             </div>
 
@@ -78,8 +79,23 @@ $inputValues = [
                         <i class="fas fa-phone text-gray-400"></i>
                     </div>
                     <input type="tel" id="phone" name="phone" required
-                           value="<?= htmlspecialchars($inputValues['phone']) ?>"
-                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        value="<?= htmlspecialchars($inputValues['phone']) ?>"
+                        class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div>
+                <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Register As</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-user-tag text-gray-400"></i>
+                    </div>
+                    <select id="role" name="role" required
+                        class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select Role</option>
+                        <option value="admin" <?= $inputValues['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
+                        <option value="manager" <?= $inputValues['role'] === 'manager' ? 'selected' : '' ?>>Manager</option>
+                    </select>
                 </div>
             </div>
 
@@ -90,7 +106,7 @@ $inputValues = [
                         <i class="fas fa-lock text-gray-400"></i>
                     </div>
                     <input type="password" id="password" name="password" required
-                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <p class="text-xs text-gray-500 mt-1">Minimum 8 characters with at least one number</p>
             </div>
@@ -102,11 +118,12 @@ $inputValues = [
                         <i class="fas fa-lock text-gray-400"></i>
                     </div>
                     <input type="password" id="confirm_password" name="confirm_password" required
-                           class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+            <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center">
                 <i class="fas fa-user-plus mr-2"></i> Register Account
             </button>
         </form>
@@ -121,11 +138,9 @@ $inputValues = [
         </div>
     </div>
 
-    <!-- Password strength validation script -->
     <script>
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirm_password');
-        
         function validatePassword() {
             if (passwordInput.value !== confirmPasswordInput.value) {
                 confirmPasswordInput.setCustomValidity("Passwords don't match");
@@ -133,7 +148,6 @@ $inputValues = [
                 confirmPasswordInput.setCustomValidity('');
             }
         }
-        
         passwordInput.addEventListener('change', validatePassword);
         confirmPasswordInput.addEventListener('keyup', validatePassword);
     </script>

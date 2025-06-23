@@ -5,23 +5,27 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
+// Database configuration
 $host = 'localhost';
-$db = 'hotelsystem';
-$user = 'root';
-$pass = '';
+$db = 'hotel_system';
+$port = '3307';
+$charset = 'utf8mb4';
+$username = 'root';
+$password = '';
 
+// Establish PDO connection
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=$charset", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Fetch rooms
+// Fetch room data
 $stmt = $pdo->query("SELECT rooms.*, room_types.type_name FROM rooms JOIN room_types ON rooms.type_id = room_types.type_id ORDER BY room_id DESC");
 $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Calculate room statistics
+// Compute statistics
 $statusCounts = ['Available' => 0, 'Occupied' => 0, 'Maintenance' => 0];
 $totalRooms = count($rooms);
 $occupiedPercentage = 0;
@@ -36,6 +40,7 @@ if ($totalRooms > 0) {
     $occupiedPercentage = round(($statusCounts['Occupied'] / $totalRooms) * 100);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
